@@ -63,3 +63,13 @@ rule NetworkAdminSystem {
     resource: "org.hyperledger.composer.system.**"
     action: ALLOW
 }
+
+rule ManufacturerCreateDrugs {
+    description: "Allow manufacturers to create and view their Drugs"
+    participant(m): "org.drugs.Manifacturer"
+    operation: CREATE
+    resource(d): "org.drugs.Drugs"
+    transaction(tx): "org.drugs.TransferDrugs"
+    condition: (d.manufacturar.getIdentifier() == m.getIdentifier() && tx.orderStatus == "VIN_ASSIGNED")
+    action: ALLOW
+}
